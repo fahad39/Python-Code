@@ -5,6 +5,7 @@ def find_path(graph, start, end, path =[]):
     if not start in graph.keys():
         return None
     for node in graph[start]:
+        if node not in path:
             newpath=find_path(graph,node,end,path)
             if newpath:
                 return newpath
@@ -26,6 +27,24 @@ def find_allpath(graph,start,end,path=[]):
                 
     return paths
 
+def must_node(graph,start,end,must,path=[]):
+    path=path+[start]
+    if start==end:
+        return path
+    if not start in graph.keys():
+        return None
+    paths=[]
+    for node in graph[start]:
+        if node not in path:
+            newpaths=find_allpath(graph,node,end,path)
+            for p in newpaths:
+                if p==must:
+                    for newpath in newpaths:
+                        paths.append(newpath)
+                
+                
+    return paths
+
 graph={'A':['B','C'],
       'B':['C','D'],
       'C':['D'],
@@ -36,3 +55,6 @@ graph={'A':['B','C'],
 print(find_path(graph, 'A', 'F')) 
 print(find_allpath(graph,'A','D'))
  
+
+Node=input('Please input that you want to include = ')
+print(must_node(graph,'A','D',Node))
